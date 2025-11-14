@@ -23,11 +23,21 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = fake('id_ID');
+        $cities = ['Jakarta Selatan', 'Bandung', 'Surabaya', 'Semarang', 'Yogyakarta', 'Medan', 'Makassar'];
+        $domains = ['gmail.com', 'yahoo.com', 'mitraalkes.id', 'sehatq.com'];
+        $name = $faker->name();
+        $city = $faker->randomElement($cities);
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'email' => Str::of($name)->slug('.') . '.' . fake()->unique()->numberBetween(1985, 2004) . '@' . $faker->randomElement($domains),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'customer',
+            'phone' => '08' . $faker->numerify('1#########'),
+            'city' => $city,
+            'address' => $faker->streetAddress() . ', ' . $city,
             'remember_token' => Str::random(10),
         ];
     }
@@ -40,5 +50,20 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn () => ['role' => 'admin']);
+    }
+
+    public function vendor(): static
+    {
+        return $this->state(fn () => ['role' => 'vendor']);
+    }
+
+    public function customer(): static
+    {
+        return $this->state(fn () => ['role' => 'customer']);
     }
 }
