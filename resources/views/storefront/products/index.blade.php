@@ -58,13 +58,11 @@
             @foreach($products as $product)
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm border-0">
-                        @if($product->thumbnail_path)
-                            <img src="{{ asset('storage/' . $product->thumbnail_path) }}" class="card-img-top" alt="{{ $product->name }}">
-                        @else
-                            <div class="bg-light text-center py-5">
-                                <span class="text-muted small">Belum ada foto</span>
-                            </div>
-                        @endif
+                        <img
+                            src="{{ $product->thumbnail_path ? asset('storage/' . $product->thumbnail_path) : 'https://placehold.co/600x400?text=OSS+Product' }}"
+                            class="card-img-top"
+                            alt="{{ $product->name }}"
+                        >
                         <div class="card-body d-flex flex-column">
                             <span class="badge rounded-pill text-bg-light mb-2">{{ $product->store->category->name ?? 'Kategori' }}</span>
                             <h5 class="card-title">{{ $product->name }}</h5>

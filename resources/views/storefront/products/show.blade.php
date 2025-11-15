@@ -12,13 +12,11 @@
     <div class="row g-4">
         <div class="col-md-6">
             <div class="card border-0 shadow-sm">
-                @if($product->thumbnail_path)
-                    <img src="{{ asset('storage/' . $product->thumbnail_path) }}" class="card-img-top" alt="{{ $product->name }}">
-                @else
-                    <div class="bg-light text-center py-5">
-                        <span class="text-muted small">Belum ada foto produk</span>
-                    </div>
-                @endif
+                <img
+                    src="{{ $product->thumbnail_path ? asset('storage/' . $product->thumbnail_path) : 'https://placehold.co/800x500?text=OSS+Product' }}"
+                    class="card-img-top"
+                    alt="{{ $product->name }}"
+                >
                 <div class="card-body">
                     <p class="text-muted small mb-0">SKU: {{ $product->sku }}</p>
                     <p class="text-muted small mb-0">Stok tersedia: {{ $product->stock }} unit</p>

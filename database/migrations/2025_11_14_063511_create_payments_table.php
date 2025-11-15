@@ -18,6 +18,10 @@ return new class extends Migration
             $table->enum('method', ['prepaid', 'cod']);
             $table->enum('status', ['pending', 'confirmed', 'failed', 'refunded'])->default('pending');
             $table->string('transaction_reference')->nullable();
+            $table->string('proof_path')->nullable();
+            $table->text('verification_note')->nullable();
+            $table->foreignId('verified_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('verified_at')->nullable();
             $table->json('meta')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();

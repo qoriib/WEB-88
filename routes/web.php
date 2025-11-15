@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\StoreApprovalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Customer\OrderPaymentController;
+use App\Http\Controllers\Seller\PaymentApprovalController;
+use App\Http\Controllers\Seller\ProductController as SellerProductController;
+use App\Http\Controllers\Seller\StoreController as SellerStoreController;
 use App\Http\Controllers\Storefront\ProductController as StorefrontProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +27,29 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('orders/{order}/payment', [OrderPaymentController::class, 'create'])->name('orders.payment.create');
+    Route::post('orders/{order}/payment', [OrderPaymentController::class, 'store'])->name('orders.payment.store');
+
+    Route::middleware('role:vendor')->prefix('seller')->name('seller.')->group(function () {
+        Route::get('store', [SellerStoreController::class, 'index'])->name('store.index');
+        Route::get('store/create', [SellerStoreController::class, 'create'])->name('store.create');
+        Route::post('store', [SellerStoreController::class, 'store'])->name('store.store');
+        Route::get('store/edit', [SellerStoreController::class, 'edit'])->name('store.edit');
+        Route::put('store', [SellerStoreController::class, 'update'])->name('store.update');
+
+        Route::resource('products', SellerProductController::class)->except(['show']);
+
+        Route::get('payments', [PaymentApprovalController::class, 'index'])->name('payments.index');
+        Route::get('payments/{payment}', [PaymentApprovalController::class, 'show'])->name('payments.show');
+        Route::patch('payments/{payment}/approve', [PaymentApprovalController::class, 'approve'])->name('payments.approve');
+        Route::patch('payments/{payment}/reject', [PaymentApprovalController::class, 'reject'])->name('payments.reject');
+    });
+
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('stores', [StoreApprovalController::class, 'index'])->name('stores.index');
+        Route::get('stores/{store}', [StoreApprovalController::class, 'show'])->name('stores.show');
+        Route::patch('stores/{store}/approve', [StoreApprovalController::class, 'approve'])->name('stores.approve');
+        Route::patch('stores/{store}/reject', [StoreApprovalController::class, 'reject'])->name('stores.reject');
+    });
 });

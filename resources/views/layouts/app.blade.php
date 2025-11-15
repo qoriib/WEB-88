@@ -26,6 +26,22 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
+                        @if(auth()->user()->role === 'vendor')
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('seller.store.*') ? 'active' : '' }}" href="{{ route('seller.store.index') }}">Toko Saya</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('seller.products.*') ? 'active' : '' }}" href="{{ route('seller.products.index') }}">Produk Saya</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('seller.payments.*') ? 'active' : '' }}" href="{{ route('seller.payments.index') }}">Pembayaran</a>
+                            </li>
+                        @endif
+                        @if(auth()->user()->role === 'admin')
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.stores.*') ? 'active' : '' }}" href="{{ route('admin.stores.index') }}">Persetujuan Toko</a>
+                            </li>
+                        @endif
                     @endauth
                 </ul>
                 <div class="d-flex align-items-center gap-3">

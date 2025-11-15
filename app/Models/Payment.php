@@ -15,6 +15,10 @@ class Payment extends Model
         'method',
         'status',
         'transaction_reference',
+        'proof_path',
+        'verification_note',
+        'verified_by',
+        'verified_at',
         'meta',
         'paid_at',
     ];
@@ -23,10 +27,16 @@ class Payment extends Model
         'amount' => 'decimal:2',
         'meta' => 'array',
         'paid_at' => 'datetime',
+        'verified_at' => 'datetime',
     ];
 
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function verifiedBy()
+    {
+        return $this->belongsTo(User::class, 'verified_by');
     }
 }
