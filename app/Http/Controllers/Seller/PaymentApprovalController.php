@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Models\TransactionReport;
+use App\Mail\OrderReportMail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class PaymentApprovalController extends Controller
@@ -49,7 +54,10 @@ class PaymentApprovalController extends Controller
             'paid_at' => $payment->paid_at ?? now(),
         ]);
 
-        $payment->order->update(['status' => 'paid']);
+        $orderStatus = $payment->method === 'cod' ? 'completed' : 'paid';
+        $payment->order->update(['status' => $orderStatus]);
+
+        $this->generateReportAndEmail($payment->order);
 
         return redirect()->route('seller.payments.show', $payment)->with('status', 'Pembayaran dikonfirmasi.');
     }
@@ -70,7 +78,7 @@ class PaymentApprovalController extends Controller
             'verification_note' => $data['verification_note'],
         ]);
 
-        $payment->order->update(['status' => 'pending']);
+        $payment->order->update(['status' => $payment->method === 'cod' ? 'cancelled' : 'pending']);
 
         return redirect()->route('seller.payments.show', $payment)->with('status', 'Pembayaran ditandai tidak valid.');
     }
@@ -90,6 +98,37 @@ class PaymentApprovalController extends Controller
     {
         if ($payment->order->store_id !== $store->id) {
             abort(403);
+        }
+    }
+
+    protected function generateReportAndEmail($order): void
+    {
+        $order->load(['items', 'user', 'store', 'payment']);
+
+        $pdf = Pdf::loadView('reports.order', ['order' => $order]);
+        $filename = 'reports/' . $order->order_number . '.pdf';
+
+        Storage::disk('public')->put($filename, $pdf->output());
+
+        TransactionReport::updateOrCreate(
+            ['order_id' => $order->id],
+            [
+                'report_path' => $filename,
+                'emailed_to' => $order->user->email,
+                'emailed_at' => now(),
+                'generated_at' => now(),
+                'meta' => [
+                    'generated_by' => auth()->user()->name ?? 'vendor',
+                ],
+            ]
+        );
+
+        try {
+            Mail::to($order->user->email)->send(new OrderReportMail($order, storage_path('app/public/' . $filename)));
+            info('OrderReportMail terkirim ke ' . $order->user->email . ' untuk order ' . $order->order_number);
+        } catch (\Throwable $e) {
+            // log silently; sharing file for download still works
+            report($e);
         }
     }
 }

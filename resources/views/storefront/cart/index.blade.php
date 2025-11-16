@@ -25,6 +25,7 @@
                                     <th>Harga</th>
                                     <th>Jumlah</th>
                                     <th>Subtotal</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,8 +42,22 @@
                                             </div>
                                         </td>
                                         <td>Rp{{ number_format($item->unit_price, 0, ',', '.') }}</td>
-                                        <td>{{ $item->quantity }}</td>
+                                        <td style="width: 160px;">
+                                            <form action="{{ route('cart.update', $item) }}" method="POST" class="d-flex align-items-center gap-2">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control form-control-sm">
+                                                <button class="btn btn-sm btn-outline-primary" type="submit">Update</button>
+                                            </form>
+                                        </td>
                                         <td>Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                                        <td class="text-end">
+                                            <form action="{{ route('cart.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus item ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-outline-danger">Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

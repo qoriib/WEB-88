@@ -47,7 +47,7 @@
                                         <button class="btn btn-primary w-100">Tambah ke Keranjang</button>
                                     </div>
                                 </div>
-                                <p class="text-muted small mb-0">Stok: {{ $product->stock }} | Pengiriman dari {{ $product->store->city }}</p>
+                                <p class="text-muted small mb-0">Stok tersedia: {{ $product->stock }} unit | Pengiriman dari {{ $product->store->city }}</p>
                             </form>
                         @endguest
                     </div>

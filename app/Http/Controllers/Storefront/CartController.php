@@ -53,11 +53,49 @@ class CartController extends Controller
         return view('storefront.cart.index', compact('cart'));
     }
 
+    public function updateItem(Request $request, CartItem $item)
+    {
+        $request->validate([
+            'quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $cart = $this->authorizeCartItem($item);
+
+        $item->update([
+            'quantity' => $request->quantity,
+            'unit_price' => $item->product->price,
+            'subtotal' => $request->quantity * $item->product->price,
+        ]);
+
+        $this->recalculateCart($cart);
+
+        return back()->with('status', 'Keranjang diperbarui.');
+    }
+
+    public function destroyItem(CartItem $item)
+    {
+        $cart = $this->authorizeCartItem($item);
+        $item->delete();
+        $this->recalculateCart($cart);
+
+        return back()->with('status', 'Item dihapus dari keranjang.');
+    }
+
     protected function recalculateCart(Cart $cart): void
     {
         $items = $cart->items;
         $cart->total_items = $items->sum('quantity');
         $cart->total_amount = $items->sum('subtotal');
         $cart->save();
+    }
+
+    protected function authorizeCartItem(CartItem $item): Cart
+    {
+        $cart = $item->cart;
+        if ($cart->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return $cart;
     }
 }

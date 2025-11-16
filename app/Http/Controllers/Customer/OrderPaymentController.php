@@ -25,12 +25,21 @@ class OrderPaymentController extends Controller
 
         $order->load('store');
 
+        if ($order->payment_method === 'cod') {
+            return redirect()
+                ->route('dashboard')
+                ->with('status', 'Pesanan COD tidak memerlukan upload bukti. Menunggu konfirmasi toko.');
+        }
+
         return view('customer.payments.upload', compact('order', 'payment'));
     }
 
     public function store(Request $request, Order $order)
     {
         $this->authorizeOrder($order);
+        if ($order->payment_method === 'cod') {
+            return redirect()->route('dashboard')->with('status', 'Pesanan COD tidak memerlukan upload bukti.');
+        }
         $payment = $order->payment ?? $order->payment()->create([
             'amount' => $order->total_amount,
             'method' => $order->payment_method,

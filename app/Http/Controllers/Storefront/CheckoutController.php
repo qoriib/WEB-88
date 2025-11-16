@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Storefront;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Mail\OrderCreatedMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -65,6 +67,13 @@ class CheckoutController extends Controller
             'method' => $data['payment_method'],
             'status' => 'pending',
         ]);
+
+        try {
+            Mail::to($order->user->email)->send(new OrderCreatedMail($order));
+            info('OrderCreatedMail terkirim ke ' . $order->user->email);
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
         return redirect()->route('orders.payment.create', $order)->with('status', 'Order dibuat. Silakan lanjutkan pembayaran dengan unggah bukti transfer.');
     }

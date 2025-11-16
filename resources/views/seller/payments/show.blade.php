@@ -19,6 +19,7 @@
                 <div class="card-body">
                     <h2 class="h6 mb-3">Detail Pembayaran</h2>
                     <p class="mb-1">Jumlah: <strong>Rp{{ number_format($payment->amount, 0, ',', '.') }}</strong></p>
+                    <p class="mb-1">Metode: <strong>{{ strtoupper($payment->method) }}</strong></p>
                     <p class="mb-1">Status: <span class="badge text-bg-{{ $payment->status === 'confirmed' ? 'success' : ($payment->status === 'failed' ? 'danger' : 'warning') }}">{{ ucfirst($payment->status) }}</span></p>
                     @if($payment->verification_note)
                         <p class="mb-1">Catatan Verifikasi: {{ $payment->verification_note }}</p>
@@ -67,7 +68,9 @@
                                 <label class="form-label">Catatan (opsional)</label>
                                 <textarea name="verification_note" class="form-control" rows="2"></textarea>
                             </div>
-                            <button class="btn btn-success w-100" type="submit">Setujui Pembayaran</button>
+                            <button class="btn btn-success w-100" type="submit">
+                                {{ $payment->method === 'cod' ? 'Konfirmasi COD Selesai' : 'Setujui Pembayaran' }}
+                            </button>
                         </form>
                         <form action="{{ route('seller.payments.reject', $payment) }}" method="POST">
                             @csrf @method('PATCH')

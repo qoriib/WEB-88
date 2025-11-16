@@ -25,6 +25,8 @@ Route::prefix('produk')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+    Route::patch('/keranjang/items/{item}', [CartController::class, 'updateItem'])->name('cart.update');
+    Route::delete('/keranjang/items/{item}', [CartController::class, 'destroyItem'])->name('cart.destroy');
     Route::get('/checkout', [\App\Http\Controllers\Storefront\CheckoutController::class, 'create'])->name('checkout.create');
     Route::post('/checkout', [\App\Http\Controllers\Storefront\CheckoutController::class, 'store'])->name('checkout.store');
 });
