@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -30,6 +31,10 @@ class ProductController extends Controller
 
         $data = $this->validateProduct($request);
 
+        if ($request->hasFile('image')) {
+            $data['thumbnail_path'] = $request->file('image')->store('products', 'public');
+        }
+
         $store->products()->create($data);
 
         return redirect()->route('seller.products.index')->with('status', 'Produk berhasil ditambahkan.');
@@ -50,6 +55,13 @@ class ProductController extends Controller
 
         $data = $this->validateProduct($request, $product);
 
+        if ($request->hasFile('image')) {
+            if ($product->thumbnail_path) {
+                Storage::disk('public')->delete($product->thumbnail_path);
+            }
+            $data['thumbnail_path'] = $request->file('image')->store('products', 'public');
+        }
+
         $product->update($data);
 
         return redirect()->route('seller.products.index')->with('status', 'Produk berhasil diperbarui.');
@@ -59,6 +71,9 @@ class ProductController extends Controller
     {
         $store = $this->ensureStoreReady();
         $this->authorizeOwnership($product, $store);
+        if ($product->thumbnail_path) {
+            Storage::disk('public')->delete($product->thumbnail_path);
+        }
         $product->delete();
 
         return redirect()->route('seller.products.index')->with('status', 'Produk telah dihapus.');
@@ -73,6 +88,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:3072'],
         ]);
 
         if ($product) {

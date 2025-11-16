@@ -8,7 +8,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <h1 class="h4 mb-4">Edit Produk</h1>
-                    <form action="{{ route('seller.products.update', $product) }}" method="POST">
+                    <form action="{{ route('seller.products.update', $product) }}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
                         @include('seller.products._form')
                         <div class="mt-4 d-flex justify-content-between">

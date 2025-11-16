@@ -62,6 +62,9 @@ class SeedData
                     'description' => 'Authorized distributor Omron, Accu-Chek, dan berbagai perangkat home care resmi bergaransi.',
                     'contact_email' => 'cs@mitraalkes.id',
                     'contact_phone' => '021-7658890',
+                    'bank_name' => 'BCA',
+                    'bank_account_name' => 'Mitra Alkes Indonesia',
+                    'bank_account_number' => '0123456789',
                 ],
                 'products' => [
                     [
@@ -115,6 +118,9 @@ class SeedData
                     'description' => 'Showroom alat rehabilitasi dan perawatan pasien rumah yang melayani area Jawa Barat.',
                     'contact_email' => 'sales@totalcarebandung.co.id',
                     'contact_phone' => '022-6078891',
+                    'bank_name' => 'Mandiri',
+                    'bank_account_name' => 'Total Care Bandung',
+                    'bank_account_number' => '9876543210',
                 ],
                 'products' => [
                     [
@@ -168,6 +174,9 @@ class SeedData
                     'description' => 'Distributor resmi peralatan laboratorium klinik dan perlengkapan proteksi infeksi.',
                     'contact_email' => 'support@primamedlab.com',
                     'contact_phone' => '031-7492212',
+                    'bank_name' => 'BNI',
+                    'bank_account_name' => 'Prima MedLab Surabaya',
+                    'bank_account_number' => '5678901234',
                 ],
                 'products' => [
                     [

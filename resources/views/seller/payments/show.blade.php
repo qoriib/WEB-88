@@ -43,6 +43,15 @@
                     @endif
                 </div>
             </div>
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="h6 mb-1">Laporan PDF</h2>
+                        <p class="text-muted small mb-0">Unduh ringkasan order untuk arsip.</p>
+                    </div>
+                    <a href="{{ route('seller.orders.report', $payment->order) }}" class="btn btn-outline-primary btn-sm">Unduh PDF</a>
+                </div>
+            </div>
         </div>
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm">

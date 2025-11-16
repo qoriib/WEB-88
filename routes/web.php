@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\StoreApprovalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\OrderPaymentController;
+use App\Http\Controllers\OrderReportController;
 use App\Http\Controllers\Seller\PaymentApprovalController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreController as SellerStoreController;
@@ -59,6 +60,8 @@ Route::middleware('auth')->group(function () {
         Route::get('payments/{payment}', [PaymentApprovalController::class, 'show'])->name('payments.show');
         Route::patch('payments/{payment}/approve', [PaymentApprovalController::class, 'approve'])->name('payments.approve');
         Route::patch('payments/{payment}/reject', [PaymentApprovalController::class, 'reject'])->name('payments.reject');
+
+        Route::get('orders/{order}/report', [OrderReportController::class, 'download'])->name('orders.report');
     });
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
@@ -66,5 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('stores/{store}', [StoreApprovalController::class, 'show'])->name('stores.show');
         Route::patch('stores/{store}/approve', [StoreApprovalController::class, 'approve'])->name('stores.approve');
         Route::patch('stores/{store}/reject', [StoreApprovalController::class, 'reject'])->name('stores.reject');
+
+        Route::get('orders/{order}/report', [OrderReportController::class, 'download'])->name('orders.report.admin');
     });
 });

@@ -63,8 +63,8 @@
                             class="card-img-top"
                             alt="{{ $product->name }}"
                         >
-                        <div class="card-body d-flex flex-column">
-                            <span class="badge rounded-pill text-bg-light mb-2">{{ $product->store->category->name ?? 'Kategori' }}</span>
+                        <div class="card-body">
+                            <span class="badge rounded-pill text-bg-light mb-2 px-3 py-2">{{ $product->store->category->name ?? 'Kategori' }}</span>
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="text-muted small mb-2">SKU: {{ $product->sku }}</p>
                             <p class="fw-bold text-primary fs-5 mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</p>

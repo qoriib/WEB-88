@@ -31,6 +31,8 @@ class UserSeeder extends Seeder
             ],
         );
 
+        $this->command?->info('Admin -> ' . $adminData['email'] . ' / ' . $adminData['password']);
+
         foreach (SeedData::vendors() as $vendor) {
             $userData = $vendor['user'];
             $vendorUser = User::updateOrCreate(
@@ -49,6 +51,8 @@ class UserSeeder extends Seeder
             SeederState::$vendors[$vendorUser->email] = $vendorUser;
         }
 
+        $this->command?->info('Vendor (default pass: Vendor#123) -> ' . implode(', ', array_keys(SeederState::$vendors)));
+
         foreach (SeedData::customers() as $customer) {
             $customerUser = User::updateOrCreate(
                 ['email' => $customer['email']],
@@ -65,5 +69,7 @@ class UserSeeder extends Seeder
 
             SeederState::$customers[$customerUser->email] = $customerUser;
         }
+
+        $this->command?->info('Customer (default pass: Customer#123) -> ' . implode(', ', array_keys(SeederState::$customers)));
     }
 }

@@ -45,3 +45,16 @@
     <input class="form-check-input" type="checkbox" role="switch" id="is_active" name="is_active" value="1" {{ $isActive ? 'checked' : '' }}>
     <label class="form-check-label" for="is_active">Produk aktif dan tampil pada katalog</label>
 </div>
+<div class="mt-3">
+    <label class="form-label">Foto Produk</label>
+    <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/png,image/jpeg">
+    @error('image')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+    @if(!empty($product?->thumbnail_path))
+        <div class="mt-2">
+            <p class="text-muted small mb-1">Foto saat ini:</p>
+            <img src="{{ asset('storage/' . $product->thumbnail_path) }}" alt="Foto produk" class="img-thumbnail" style="max-height: 120px;">
+        </div>
+    @endif
+</div>

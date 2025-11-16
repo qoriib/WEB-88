@@ -66,7 +66,7 @@ class OrderPaymentController extends Controller
         $order->update(['status' => 'pending']);
 
         return redirect()
-            ->route('orders.payment.create', $order)
+            ->route('dashboard')
             ->with('status', 'Bukti pembayaran berhasil diunggah. Menunggu verifikasi toko.');
     }
 

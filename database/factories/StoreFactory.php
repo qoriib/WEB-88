@@ -40,6 +40,9 @@ class StoreFactory extends Factory
             'address' => $faker->streetAddress() . ', ' . $city,
             'contact_email' => Str::slug($name, '.') . '@' . fake()->randomElement(['mitraalkes.id', 'hanivamedik.com', 'totalcare.co.id']),
             'contact_phone' => '0' . $faker->numerify('812########'),
+            'bank_name' => $faker->randomElement(['BCA', 'Mandiri', 'BNI', 'BRI']),
+            'bank_account_name' => $name,
+            'bank_account_number' => $faker->numerify('0##########'),
             'logo_path' => null,
             'approved_at' => now()->subDays(fake()->numberBetween(2, 20)),
         ];

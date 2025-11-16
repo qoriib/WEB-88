@@ -8,7 +8,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <h1 class="h4 mb-4">Tambah Produk Baru</h1>
-                    <form action="{{ route('seller.products.store') }}" method="POST">
+                    <form action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data">
                         @include('seller.products._form')
                         <div class="mt-4 d-flex justify-content-between">
                             <a href="{{ route('seller.products.index') }}" class="btn btn-outline-secondary">Batal</a>
