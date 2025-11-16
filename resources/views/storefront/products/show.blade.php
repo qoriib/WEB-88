@@ -34,7 +34,23 @@
                         <h6 class="fw-semibold mb-1">{{ $product->store->name }}</h6>
                         <p class="text-muted small mb-2">{{ $product->store->address }} - {{ $product->store->city }}</p>
                         <p class="text-muted small mb-1">Kontak: {{ $product->store->contact_email ?? '-' }} | {{ $product->store->contact_phone ?? '-' }}</p>
-                        <a href="{{ route('register') }}" class="btn btn-primary w-100 mt-3">Login / Registrasi untuk memesan</a>
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary w-100 mt-3">Login / Registrasi untuk memesan</a>
+                        @else
+                            <form action="{{ route('cart.add', $product) }}" method="POST" class="mt-3">
+                                @csrf
+                                <div class="row g-2 align-items-center mb-2">
+                                    <div class="col-4 col-sm-3">
+                                        <label class="form-label mb-0 small">Jumlah</label>
+                                        <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}" class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-primary w-100">Tambah ke Keranjang</button>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-0">Stok: {{ $product->stock }} | Pengiriman dari {{ $product->store->city }}</p>
+                            </form>
+                        @endguest
                     </div>
                 </div>
             </div>
@@ -48,6 +64,7 @@
                 @foreach($relatedProducts as $related)
                     <div class="col-md-3">
                         <div class="card border-0 shadow-sm h-100">
+                            <img src="{{ $related->thumbnail_path ? asset('storage/' . $related->thumbnail_path) : 'https://placehold.co/600x400?text=OSS+Product' }}" class="card-img-top" alt="{{ $related->name }}">
                             <div class="card-body">
                                 <h6 class="fw-semibold">{{ \Illuminate\Support\Str::limit($related->name, 40) }}</h6>
                                 <p class="text-muted small mb-2">Rp{{ number_format($related->price, 0, ',', '.') }}</p>

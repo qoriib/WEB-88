@@ -11,38 +11,36 @@
                 OSS memudahkan vendor alat kesehatan membuka toko daring, dan pelanggan bisa memesan perangkat
                 diagnostik, perawatan pasien, hingga perlengkapan laboratorium tanpa meninggalkan klinik mereka.
             </p>
-            <div class="d-flex gap-3">
-                <a href="{{ route('register') }}" class="btn btn-primary btn-lg px-4">Mulai Registrasi</a>
-                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-lg px-4">Sudah punya akun?</a>
+            <div class="d-flex flex-wrap gap-3">
+                <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg px-4">Belanja Sekarang</a>
+                <a href="{{ route('store.apply.public') }}" class="btn btn-outline-primary btn-lg px-4">Ajukan Toko</a>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Mengapa OSS?</h5>
-                    <ul class="list-unstyled mt-3 mb-0">
-                        <li class="d-flex mb-3">
-                            <span class="badge text-bg-primary rounded-circle me-3">1</span>
-                            <div>
-                                <h6 class="fw-semibold mb-1">Manajemen toko lengkap</h6>
-                                <p class="mb-0 text-muted">Admin menyetujui permohonan toko, vendor mengelola katalog, stok, dan pesanan.</p>
-                            </div>
-                        </li>
-                        <li class="d-flex mb-3">
-                            <span class="badge text-bg-primary rounded-circle me-3">2</span>
-                            <div>
-                                <h6 class="fw-semibold mb-1">Keranjang & pembayaran aman</h6>
-                                <p class="mb-0 text-muted">Pelanggan dapat checkout dengan prepaid (VA/ kartu) atau COD dalam kota.</p>
-                            </div>
-                        </li>
-                        <li class="d-flex">
-                            <span class="badge text-bg-primary rounded-circle me-3">3</span>
-                            <div>
-                                <h6 class="fw-semibold mb-1">Laporan transaksi otomatis</h6>
-                                <p class="mb-0 text-muted">Setiap order menghasilkan PDF dan dikirim ke pelanggan untuk arsip.</p>
-                            </div>
-                        </li>
-                    </ul>
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100 text-center p-3">
+                        <p class="fw-semibold mb-1">Produk Resmi</p>
+                        <p class="text-muted small mb-0">Mitra terverifikasi alat kesehatan, harga transparan.</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100 text-center p-3">
+                        <p class="fw-semibold mb-1">Pembayaran Aman</p>
+                        <p class="text-muted small mb-0">Upload bukti transfer, verifikasi langsung oleh vendor.</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100 text-center p-3">
+                        <p class="fw-semibold mb-1">Pengajuan Toko</p>
+                        <p class="text-muted small mb-0">Daftar gratis, ajukan toko, admin menyetujui.</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100 text-center p-3">
+                        <p class="fw-semibold mb-1">Lacak Pesanan</p>
+                        <p class="text-muted small mb-0">Dashboard pelanggan memantau status order & pembayaran.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,6 +57,7 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="border rounded-3 p-3 h-100">
+                    <img src="https://placehold.co/600x400?text=OSS+Product" class="img-fluid rounded mb-3" alt="Produk OSS">
                     <h6 class="fw-semibold mb-1">Tensimeter Omron HEM-7156</h6>
                     <p class="text-muted small mb-2">Mitra Alkes Indonesia</p>
                     <p class="fw-bold text-primary mb-0">Rp865.000</p>
@@ -66,6 +65,7 @@
             </div>
             <div class="col-md-4">
                 <div class="border rounded-3 p-3 h-100">
+                    <img src="https://placehold.co/600x400?text=OSS+Product" class="img-fluid rounded mb-3" alt="Produk OSS">
                     <h6 class="fw-semibold mb-1">Kursi Roda Sella FS809</h6>
                     <p class="text-muted small mb-2">Total Care Bandung</p>
                     <p class="fw-bold text-primary mb-0">Rp1.850.000</p>
@@ -73,9 +73,35 @@
             </div>
             <div class="col-md-4">
                 <div class="border rounded-3 p-3 h-100">
+                    <img src="https://placehold.co/600x400?text=OSS+Product" class="img-fluid rounded mb-3" alt="Produk OSS">
                     <h6 class="fw-semibold mb-1">Autoclave Tuttnauer EZ9</h6>
                     <p class="text-muted small mb-2">Prima MedLab Surabaya</p>
                     <p class="fw-bold text-primary mb-0">Rp48.500.000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="fw-semibold">Pelanggan</h5>
+                        <p class="text-muted">Daftar, pilih produk, bayar (upload bukti), pantau status di dashboard.</p>
+                        <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm">Buat Akun</a>
+                        <a href="{{ route('dashboard') }}" class="btn btn-link btn-sm">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="fw-semibold">Vendor</h5>
+                        <p class="text-muted">Ajukan toko, tunggu persetujuan admin, lalu kelola produk dan verifikasi pembayaran.</p>
+                        <a href="{{ route('store.apply.public') }}" class="btn btn-outline-primary btn-sm">Ajukan Toko</a>
+                        <a href="{{ route('seller.products.index') }}" class="btn btn-link btn-sm">Produk Saya</a>
+                    </div>
                 </div>
             </div>
         </div>

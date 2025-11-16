@@ -23,6 +23,8 @@ class OrderPaymentController extends Controller
             ]);
         }
 
+        $order->load('store');
+
         return view('customer.payments.upload', compact('order', 'payment'));
     }
 

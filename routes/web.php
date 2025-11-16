@@ -6,7 +6,10 @@ use App\Http\Controllers\Customer\OrderPaymentController;
 use App\Http\Controllers\Seller\PaymentApprovalController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreController as SellerStoreController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Storefront\ProductController as StorefrontProductController;
+use App\Http\Controllers\Storefront\StoreApplicationController;
+use App\Http\Controllers\Storefront\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('welcome');
@@ -14,7 +17,19 @@ Route::view('/', 'welcome')->name('welcome');
 Route::prefix('produk')->group(function () {
     Route::get('/', [StorefrontProductController::class, 'index'])->name('products.index');
     Route::get('{slug}', [StorefrontProductController::class, 'show'])->name('products.show');
+    Route::post('{product}/add-to-cart', [CartController::class, 'add'])->middleware('auth')->name('cart.add');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/checkout', [\App\Http\Controllers\Storefront\CheckoutController::class, 'create'])->name('checkout.create');
+    Route::post('/checkout', [\App\Http\Controllers\Storefront\CheckoutController::class, 'store'])->name('checkout.store');
+});
+
+Route::get('/ajukan-toko', [StoreApplicationController::class, 'show'])->name('store.apply.public');
+Route::post('/ajukan-toko', [StoreApplicationController::class, 'submit'])
+    ->middleware('auth')
+    ->name('store.apply.submit');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -25,7 +40,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('orders/{order}/payment', [OrderPaymentController::class, 'create'])->name('orders.payment.create');

@@ -24,6 +24,11 @@
                     </li>
                     @auth
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('cart.index') ? 'active' : '' }}" href="{{ route('cart.index') }}">Keranjang</a>
+                        </li>
+                    @endauth
+                    @auth
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                         @if(auth()->user()->role === 'vendor')

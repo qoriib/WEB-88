@@ -1,0 +1,114 @@
+@extends('layouts.app')
+
+@section('title', 'Ajukan Toko - OSS')
+
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <p class="text-uppercase text-primary small mb-1">Vendor Onboarding</p>
+                    <h1 class="h4 mb-3">Ajukan Toko Alat Kesehatan Anda</h1>
+                    <p class="text-muted mb-3">
+                        Buat etalase online untuk menjual produk alat kesehatan. Admin OSS akan melakukan verifikasi
+                        legalitas dan kesiapan toko sebelum disetujui.
+                    </p>
+                    <ul class="text-muted mb-4">
+                        <li>Lengkapi profil toko: nama, kategori, alamat, dan kontak.</li>
+                        <li>Tim admin akan meninjau permohonan Anda.</li>
+                        <li>Setelah disetujui, kelola katalog produk dan verifikasi pembayaran pelanggan.</li>
+                    </ul>
+
+                    @guest
+                        <div class="alert alert-info">
+                            Login atau registrasi untuk mengajukan toko Anda.
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                            <a href="{{ route('register') }}" class="btn btn-outline-primary">Registrasi</a>
+                        </div>
+                    @else
+                        @if($store && in_array($store->status, ['pending', 'approved']))
+                            <div class="alert alert-info mb-3">
+                                Pengajuan Anda berstatus {{ $store->status }}. Admin akan mengubah role menjadi vendor setelah disetujui.
+                            </div>
+                        @endif
+                        <form action="{{ route('store.apply.submit') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label">Nama Toko</label>
+                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                                       value="{{ old('name', $store->name ?? '') }}" required>
+                                @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Kategori</label>
+                                <select name="store_category_id" class="form-select @error('store_category_id') is-invalid @enderror" required>
+                                    <option value="">Pilih kategori</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" @selected(old('store_category_id', $store->store_category_id ?? null) == $category->id)>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('store_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Deskripsi</label>
+                                <textarea name="description" rows="3" class="form-control @error('description') is-invalid @enderror" required>{{ old('description', $store->description ?? '') }}</textarea>
+                                @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Kota</label>
+                                <input type="text" name="city" class="form-control @error('city') is-invalid @enderror"
+                                       value="{{ old('city', $store->city ?? auth()->user()->city) }}" required>
+                                @error('city') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Alamat</label>
+                                <textarea name="address" rows="2" class="form-control @error('address') is-invalid @enderror" required>{{ old('address', $store->address ?? auth()->user()->address) }}</textarea>
+                                @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Email Kontak</label>
+                                    <input type="email" name="contact_email" class="form-control @error('contact_email') is-invalid @enderror"
+                                           value="{{ old('contact_email', $store->contact_email ?? auth()->user()->email) }}" required>
+                                    @error('contact_email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Telepon Kontak</label>
+                                    <input type="text" name="contact_phone" class="form-control @error('contact_phone') is-invalid @enderror"
+                                           value="{{ old('contact_phone', $store->contact_phone ?? auth()->user()->phone) }}" required>
+                                    @error('contact_phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-4">
+                                    <label class="form-label">Bank</label>
+                                    <input type="text" name="bank_name" class="form-control @error('bank_name') is-invalid @enderror"
+                                           value="{{ old('bank_name', $store->bank_name ?? '') }}">
+                                    @error('bank_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Nama Rekening</label>
+                                    <input type="text" name="bank_account_name" class="form-control @error('bank_account_name') is-invalid @enderror"
+                                           value="{{ old('bank_account_name', $store->bank_account_name ?? auth()->user()->name) }}">
+                                    @error('bank_account_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">No. Rekening</label>
+                                    <input type="text" name="bank_account_number" class="form-control @error('bank_account_number') is-invalid @enderror"
+                                           value="{{ old('bank_account_number', $store->bank_account_number ?? '') }}">
+                                    @error('bank_account_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex justify-content-between">
+                                <a href="{{ route('welcome') }}" class="btn btn-outline-secondary">Batal</a>
+                                <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+                            </div>
+                        </form>
+                    @endguest
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

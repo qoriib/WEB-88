@@ -10,6 +10,14 @@
                     <h1 class="h4 mb-3">Bukti Pembayaran</h1>
                     <p class="text-muted mb-1">Order #: {{ $order->order_number }}</p>
                     <p class="text-muted mb-3">Total Tagihan: <strong>Rp{{ number_format($order->total_amount, 0, ',', '.') }}</strong></p>
+                    <div class="alert alert-secondary">
+                        <p class="mb-1 fw-semibold">Rekening Pembayaran Toko</p>
+                        <p class="mb-0">
+                            {{ $order->store->bank_name ?? 'Bank tidak tersedia' }}<br>
+                            a.n {{ $order->store->bank_account_name ?? '-' }}<br>
+                            {{ $order->store->bank_account_number ?? '-' }}
+                        </p>
+                    </div>
                     <p class="mb-0">Silakan transfer sesuai instruksi dan unggah bukti pembayaran agar pemilik toko dapat melakukan verifikasi.</p>
                 </div>
             </div>

@@ -26,6 +26,14 @@
                             <p class="text-muted mb-2">{{ $store->category->name ?? 'Tanpa kategori' }}</p>
                             <p class="text-muted mb-2">{{ $store->city }} &mdash; {{ $store->address }}</p>
                             <p class="mb-0">{{ $store->description }}</p>
+                            <div class="mt-3 p-2 bg-light rounded">
+                                <p class="fw-semibold mb-1">Rekening Pembayaran</p>
+                                <p class="text-muted small mb-0">
+                                    {{ $store->bank_name ?? '-' }}<br>
+                                    a.n {{ $store->bank_account_name ?? '-' }}<br>
+                                    {{ $store->bank_account_number ?? '-' }}
+                                </p>
+                            </div>
                         </div>
                         <div class="text-end">
                             <p class="text-muted small mb-1">Diajukan: {{ $store->created_at->format('d M Y H:i') }}</p>

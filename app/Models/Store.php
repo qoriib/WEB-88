@@ -20,6 +20,9 @@ class Store extends Model
         'address',
         'contact_email',
         'contact_phone',
+        'bank_name',
+        'bank_account_name',
+        'bank_account_number',
         'logo_path',
         'approved_at',
     ];

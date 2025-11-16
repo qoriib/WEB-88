@@ -72,6 +72,26 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-4">
+                                <label class="form-label">Bank</label>
+                                <input type="text" name="bank_name" class="form-control @error('bank_name') is-invalid @enderror"
+                                       value="{{ old('bank_name', $store->bank_name) }}">
+                                @error('bank_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Nama Rekening</label>
+                                <input type="text" name="bank_account_name" class="form-control @error('bank_account_name') is-invalid @enderror"
+                                       value="{{ old('bank_account_name', $store->bank_account_name) }}">
+                                @error('bank_account_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Rekening</label>
+                                <input type="text" name="bank_account_number" class="form-control @error('bank_account_number') is-invalid @enderror"
+                                       value="{{ old('bank_account_number', $store->bank_account_number) }}">
+                                @error('bank_account_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
                         <div class="mt-4 d-flex justify-content-between">
                             <a href="{{ route('seller.store.index') }}" class="btn btn-outline-secondary">Kembali</a>
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

@@ -53,6 +53,10 @@ class StoreApprovalController extends Controller
             'approved_at' => now(),
         ]);
 
+        if ($store->owner && $store->owner->role !== 'admin') {
+            $store->owner->update(['role' => 'vendor']);
+        }
+
         return redirect()->route('admin.stores.index')->with('status', 'Toko ' . $store->name . ' disetujui.');
     }
 

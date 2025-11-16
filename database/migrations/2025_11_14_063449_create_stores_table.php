@@ -23,6 +23,9 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('contact_email')->nullable();
             $table->string('contact_phone')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account_name')->nullable();
+            $table->string('bank_account_number')->nullable();
             $table->string('logo_path')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
