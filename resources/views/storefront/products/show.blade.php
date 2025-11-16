@@ -25,12 +25,12 @@
         </div>
         <div class="col-md-6">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex flex-column">
-                    <span class="badge text-bg-light mb-2">{{ $product->store->category->name ?? 'Kategori' }}</span>
+                <div class="card-body d-flex flex-column align-items-start">
+                    <span class="badge text-bg-light rounded-pill px-3 py-2 mb-2">{{ $product->store->category->name ?? 'Kategori' }}</span>
                     <h1 class="h3">{{ $product->name }}</h1>
                     <p class="fw-bold text-primary fs-3">Rp{{ number_format($product->price, 0, ',', '.') }}</p>
                     <p class="text-muted flex-grow-1">{{ $product->description }}</p>
-                    <div class="border-top pt-3 mt-3">
+                    <div class="w-100 border-top pt-3 mt-3">
                         <h6 class="fw-semibold mb-1">{{ $product->store->name }}</h6>
                         <p class="text-muted small mb-2">{{ $product->store->address }} - {{ $product->store->city }}</p>
                         <p class="text-muted small mb-1">Kontak: {{ $product->store->contact_email ?? '-' }} | {{ $product->store->contact_phone ?? '-' }}</p>
@@ -40,9 +40,8 @@
                             <form action="{{ route('cart.add', $product) }}" method="POST" class="mt-3">
                                 @csrf
                                 <div class="row g-2 align-items-center mb-2">
-                                    <div class="col-4 col-sm-3">
-                                        <label class="form-label mb-0 small">Jumlah</label>
-                                        <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}" class="form-control form-control-sm">
+                                    <div class="col-3 col-sm-2">
+                                        <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}" class="form-control">
                                     </div>
                                     <div class="col">
                                         <button class="btn btn-primary w-100">Tambah ke Keranjang</button>

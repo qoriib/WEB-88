@@ -8,15 +8,18 @@
             <h1 class="h4 mb-1">Pembayaran Pelanggan</h1>
             <p class="text-muted mb-0">Kelola bukti transfer yang masuk untuk toko Anda.</p>
         </div>
-        <form class="d-flex gap-2" method="GET">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">Semua status</option>
-                <option value="pending" @selected(($filters['status'] ?? '') === 'pending')>Pending</option>
-                <option value="confirmed" @selected(($filters['status'] ?? '') === 'confirmed')>Dikonfirmasi</option>
-                <option value="failed" @selected(($filters['status'] ?? '') === 'failed')>Ditolak</option>
-            </select>
-            <button class="btn btn-primary btn-sm">Filter</button>
-        </form>
+        <div class="d-flex gap-2">
+            <form class="d-flex gap-2" method="GET">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="">Semua status</option>
+                    <option value="pending" @selected(($filters['status'] ?? '') === 'pending')>Pending</option>
+                    <option value="confirmed" @selected(($filters['status'] ?? '') === 'confirmed')>Dikonfirmasi</option>
+                    <option value="failed" @selected(($filters['status'] ?? '') === 'failed')>Ditolak</option>
+                </select>
+                <button class="btn btn-primary btn-sm">Filter</button>
+            </form>
+            <a href="{{ route('seller.reports.payments') }}" class="btn btn-outline-secondary btn-sm">Export PDF</a>
+        </div>
     </div>
 
     <div class="card border-0 shadow-sm">
@@ -29,6 +32,7 @@
                         <th>Jumlah</th>
                         <th>Status</th>
                         <th>Updated</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -46,6 +50,11 @@
                             <td>{{ $payment->updated_at->format('d M Y H:i') }}</td>
                             <td class="text-end">
                                 <a href="{{ route('seller.payments.show', $payment) }}" class="btn btn-sm btn-outline-primary">Detail</a>
+                            </td>
+                            <td class="text-end">
+                                @if($loop->first)
+                                    <a href="{{ route('seller.reports.payments') }}" class="btn btn-sm btn-outline-secondary">Export PDF</a>
+                                @endif
                             </td>
                         </tr>
                     @empty

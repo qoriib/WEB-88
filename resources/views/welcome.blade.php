@@ -45,7 +45,6 @@
             </div>
         </div>
     </div>
-
     <div class="mt-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
@@ -55,55 +54,21 @@
             <a href="{{ route('products.index') }}" class="btn btn-outline-primary">Buka katalog</a>
         </div>
         <div class="row g-3">
-            <div class="col-md-4">
-                <div class="border rounded-3 p-3 h-100">
-                    <img src="https://placehold.co/600x400?text=OSS+Product" class="img-fluid rounded mb-3" alt="Produk OSS">
-                    <h6 class="fw-semibold mb-1">Tensimeter Omron HEM-7156</h6>
-                    <p class="text-muted small mb-2">Mitra Alkes Indonesia</p>
-                    <p class="fw-bold text-primary mb-0">Rp865.000</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="border rounded-3 p-3 h-100">
-                    <img src="https://placehold.co/600x400?text=OSS+Product" class="img-fluid rounded mb-3" alt="Produk OSS">
-                    <h6 class="fw-semibold mb-1">Kursi Roda Sella FS809</h6>
-                    <p class="text-muted small mb-2">Total Care Bandung</p>
-                    <p class="fw-bold text-primary mb-0">Rp1.850.000</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="border rounded-3 p-3 h-100">
-                    <img src="https://placehold.co/600x400?text=OSS+Product" class="img-fluid rounded mb-3" alt="Produk OSS">
-                    <h6 class="fw-semibold mb-1">Autoclave Tuttnauer EZ9</h6>
-                    <p class="text-muted small mb-2">Prima MedLab Surabaya</p>
-                    <p class="fw-bold text-primary mb-0">Rp48.500.000</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-5">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="fw-semibold">Pelanggan</h5>
-                        <p class="text-muted">Daftar, pilih produk, bayar (upload bukti), pantau status di dashboard.</p>
-                        <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm">Buat Akun</a>
-                        <a href="{{ route('dashboard') }}" class="btn btn-link btn-sm">Dashboard</a>
+            @forelse($featuredProducts as $item)
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <img src="{{ $item->thumbnail_path ? asset('storage/' . $item->thumbnail_path) : 'https://placehold.co/600x400?text=OSS+Product' }}"
+                             class="img-fluid rounded mb-3" alt="{{ $item->name }}">
+                        <h6 class="fw-semibold mb-1">{{ $item->name }}</h6>
+                        <p class="text-muted small mb-2">{{ $item->store->name ?? '-' }}</p>
+                        <p class="fw-bold text-primary mb-0">Rp{{ number_format($item->price, 0, ',', '.') }}</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="fw-semibold">Vendor</h5>
-                        <p class="text-muted">Ajukan toko, tunggu persetujuan admin, lalu kelola produk dan verifikasi pembayaran.</p>
-                        <a href="{{ route('store.apply.public') }}" class="btn btn-outline-primary btn-sm">Ajukan Toko</a>
-                        <a href="{{ route('seller.products.index') }}" class="btn btn-link btn-sm">Produk Saya</a>
-                    </div>
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-info mb-0">Produk belum tersedia.</div>
                 </div>
-            </div>
+            @endforelse
         </div>
     </div>
 @endsection

@@ -65,7 +65,7 @@
         </div>
     </nav>
 
-    <main class="flex-grow-1 py-5">
+    <main class="flex-grow-1 py-4">
         <div class="container">
             @if (session('status'))
                 <div class="alert alert-success" role="alert">

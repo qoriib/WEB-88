@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Seller;
 
+use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\TransactionReport;
+use App\Models\Payment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,9 +15,7 @@ class OrderReportController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->role === 'vendor' && $order->store->user_id !== $user->id) {
-            abort(403);
-        } elseif ($user->role === 'customer' || ($user->role !== 'admin' && $user->role !== 'vendor')) {
+        if (! $user || $user->role !== 'vendor' || $order->store->user_id !== $user->id) {
             abort(403);
         }
 
@@ -38,6 +38,32 @@ class OrderReportController extends Controller
                 ],
             ]
         );
+
+        return response()->file(storage_path('app/public/' . $filename));
+    }
+
+    public function exportPayments()
+    {
+        $user = auth()->user();
+        $store = $user->store;
+
+        if (! $store || $store->status !== 'approved') {
+            abort(403);
+        }
+
+        $payments = Payment::with(['order.user'])
+            ->whereHas('order', fn ($q) => $q->where('store_id', $store->id))
+            ->orderByDesc('created_at')
+            ->take(50)
+            ->get();
+
+        $pdf = Pdf::loadView('reports.vendor-payments', [
+            'store' => $store,
+            'payments' => $payments,
+        ]);
+
+        $filename = 'reports/vendor-' . $store->slug . '-payments.pdf';
+        Storage::disk('public')->put($filename, $pdf->output());
 
         return response()->file(storage_path('app/public/' . $filename));
     }

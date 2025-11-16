@@ -3,17 +3,19 @@
 use App\Http\Controllers\Admin\StoreApprovalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\OrderPaymentController;
-use App\Http\Controllers\OrderReportController;
+use App\Http\Controllers\Admin\OrderReportController as AdminOrderReportController;
 use App\Http\Controllers\Seller\PaymentApprovalController;
+use App\Http\Controllers\Seller\OrderReportController as SellerOrderReportController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreController as SellerStoreController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Storefront\ProductController as StorefrontProductController;
+use App\Http\Controllers\Storefront\HomeController;
 use App\Http\Controllers\Storefront\StoreApplicationController;
 use App\Http\Controllers\Storefront\CartController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Route::prefix('produk')->group(function () {
     Route::get('/', [StorefrontProductController::class, 'index'])->name('products.index');
@@ -61,7 +63,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('payments/{payment}/approve', [PaymentApprovalController::class, 'approve'])->name('payments.approve');
         Route::patch('payments/{payment}/reject', [PaymentApprovalController::class, 'reject'])->name('payments.reject');
 
-        Route::get('orders/{order}/report', [OrderReportController::class, 'download'])->name('orders.report');
+        Route::get('orders/{order}/report', [SellerOrderReportController::class, 'download'])->name('orders.report');
+        Route::get('reports/payments', [SellerOrderReportController::class, 'exportPayments'])->name('reports.payments');
     });
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
@@ -70,6 +73,6 @@ Route::middleware('auth')->group(function () {
         Route::patch('stores/{store}/approve', [StoreApprovalController::class, 'approve'])->name('stores.approve');
         Route::patch('stores/{store}/reject', [StoreApprovalController::class, 'reject'])->name('stores.reject');
 
-        Route::get('orders/{order}/report', [OrderReportController::class, 'download'])->name('orders.report.admin');
+        Route::get('orders/{order}/report', [AdminOrderReportController::class, 'download'])->name('orders.report.admin');
     });
 });
